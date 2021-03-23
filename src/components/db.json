@@ -19,7 +19,7 @@
             "updatedDate": "23-01-2012"
         },
         {
-            "id": "124",
+            "id": "125",
             "user": "user3",
             "url": "https://dothttp.dev/collection3",
             "description": "this is collection3 desc",
@@ -30,28 +30,28 @@
     ],
     "requests": [
         {
-            "name": "request1",
             "id": "1",
             "collectionid": "123",
-            "createdDate": "24-03-2021",
+            "name": "httpbin get curl request",
+            "createdDate": "23-03-2021",
             "updatedDate": "24-03-2021",
             "inbound": true,
-            "httpdef": "https://dothttp.dev/collection/req",
-            "curl": "string",
-            "url": "string",
+            "httpdef": "@name(\"httpbin get curl request\")GET \"https://httpbin.org/get\"",
+            "curl": "curl -X GET \\ https://httpbin.org/get",
+            "url": "https://httpbin.org/get",
             "method": "GET",
             "queryparams": [
                 {
-                    "key": "string",
-                    "value": "string",
+                    "key": "null",
+                    "value": "null",
                     "enabled": true,
-                    "description": "string"
+                    "description": "null"
                 }
             ],
             "headers": [
                 {
-                    "key": "string",
-                    "value": "string",
+                    "key": "null",
+                    "value": "null",
                     "enabled": true,
                     "description": "string"
                 }
@@ -62,16 +62,16 @@
             ]
         },
         {
-            "name": "request2",
-            "id": "1",
+            "id": "2",
             "collectionid": "123",
-            "createdDate": 0,
-            "updatedDate": 0,
+            "name": "http bin post request",
+            "createdDate": "22-03-2021",
+            "updatedDate": "22-03-2021",
             "inbound": true,
-            "httpdef": "string",
-            "curl": "string",
-            "url": "string",
-            "method": "GET",
+            "httpdef": "@name(\"httpbin Post curl request\") POST \"https://httpbin.org/post\"",
+            "curl": "curl -X POST \\ -H 'Content-Length: 52' \\-H 'Content-Type: application/json' \\-d '{\"userName\": \"aravind\", \"mail\": \"aravind@gmail.com\"}' \\ https://httpbin.org/post",
+            "url": "https://httpbin.org/post",
+            "method": "POST",
             "queryparams": [
                 {
                     "key": "string",
@@ -88,14 +88,17 @@
                     "description": "string"
                 }
             ],
-            "payload": {},
+            "payload": {
+                "userName":"aravind",
+                "mail":"aravind@gmail.com"},
             "tag": [
                 "string"
             ]
-        }, {
-            "name": "request21",
-            "id": "1",
+        },
+        {
             "collectionid": "124",
+            "name": "request21",
+            "id": "3",
             "createdDate": 0,
             "updatedDate": 0,
             "inbound": true,

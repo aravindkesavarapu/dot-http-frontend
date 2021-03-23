@@ -1,5 +1,12 @@
-@name("1")
+@name("httpbin get curl request")
 GET "https://httpbin.org/get"
 
 
 
+@name("httpbin Post curl request")
+POST "https://httpbin.org/post"
+json({
+    "userName":"aravind",
+    "mail":"aravind@gmail.com"
+
+})

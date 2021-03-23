@@ -31,7 +31,6 @@
               <v-list-item-title v-text="item.title"></v-list-item-title>
             </v-list-item-content>
           </template>
-
           <v-list-item v-for="child in item.items" :key="child.title">
             <v-list-item-content>
               <v-list-item-title
@@ -71,16 +70,16 @@
                   <v-list-item-title>{{ collection.name }}</v-list-item-title>
                 </v-list-item-content>
               </template>
-              <v-list-item v-for="request in requests" :key="request.id">
-                <v-list-item-content
-                  
-                  v-text="request.method"
-                  :click="getRequestData(request.id)"
-                ></v-list-item-content>
-                <v-list-item-content v-text="request.name"></v-list-item-content>
-                <!-- <v-list-item-icon>
-                  <v-icon v-text="icon"></v-icon>
-                </v-list-item-icon> -->
+              <v-list-item v-for="request in requests" :key="request.id" link>
+                <v-list-item-content>
+                  <v-list-item-title
+                    v-text="request.method"
+                    :click="getRequestData(request.id)"
+                  ></v-list-item-title>
+                  <v-list-item-subtitle
+                    v-text="request.name"
+                  ></v-list-item-subtitle>
+                </v-list-item-content>
               </v-list-item>
             </v-list-group>
           </v-list-group>
@@ -90,17 +89,15 @@
   </nav>
 </template>
 
+
 <script>
 export default {
   data() {
     return {
-      drawer: true,
+      // open:false,
+      drawer: false,
       collectionCheck: false,
       requestData: [],
-      // admins: [
-      //   ["Management", "mdi-account-multiple-outline"],
-      //   ["Settings", "mdi-cog-outline"],
-      // ],
       collections: [],
       requests: [],
     };
@@ -120,10 +117,11 @@ export default {
       });
     },
     getRequestData(requestId) {
+      console.log("in get requst dayta", requestId);
       this.$http.get("requests/" + requestId).then((res) => {
         if (res.status == 200) {
           this.requestData = res.data;
-          console.log("req", this.requestData);
+          console.log("req: ", requestId, this.requestData);
         }
       });
     },
