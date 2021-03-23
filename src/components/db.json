@@ -1,0 +1,128 @@
+{
+    "collection": [
+        {
+            "id": "123",
+            "user": "user1",
+            "url": "https://dothttp.dev/collection1",
+            "description": "this is collection1 desc",
+            "name": "collection1",
+            "createdDate": "22-03-2021",
+            "updatedDate": "22-01-2012"
+        },
+        {
+            "id": "124",
+            "user": "user2",
+            "url": "https://dothttp.dev/collection2",
+            "description": "this is collection2 desc",
+            "name": "collection2",
+            "createdDate": "23-03-2021",
+            "updatedDate": "23-01-2012"
+        },
+        {
+            "id": "124",
+            "user": "user3",
+            "url": "https://dothttp.dev/collection3",
+            "description": "this is collection3 desc",
+            "name": "collection3",
+            "createdDate": "24-03-2021",
+            "updatedDate": "24-01-2012"
+        }
+    ],
+    "requests": [
+        {
+            "name": "request1",
+            "id": "1",
+            "collectionid": "123",
+            "createdDate": "24-03-2021",
+            "updatedDate": "24-03-2021",
+            "inbound": true,
+            "httpdef": "https://dothttp.dev/collection/req",
+            "curl": "string",
+            "url": "string",
+            "method": "GET",
+            "queryparams": [
+                {
+                    "key": "string",
+                    "value": "string",
+                    "enabled": true,
+                    "description": "string"
+                }
+            ],
+            "headers": [
+                {
+                    "key": "string",
+                    "value": "string",
+                    "enabled": true,
+                    "description": "string"
+                }
+            ],
+            "payload": {},
+            "tag": [
+                "string"
+            ]
+        },
+        {
+            "name": "request2",
+            "id": "1",
+            "collectionid": "123",
+            "createdDate": 0,
+            "updatedDate": 0,
+            "inbound": true,
+            "httpdef": "string",
+            "curl": "string",
+            "url": "string",
+            "method": "GET",
+            "queryparams": [
+                {
+                    "key": "string",
+                    "value": "string",
+                    "enabled": true,
+                    "description": "string"
+                }
+            ],
+            "headers": [
+                {
+                    "key": "string",
+                    "value": "string",
+                    "enabled": true,
+                    "description": "string"
+                }
+            ],
+            "payload": {},
+            "tag": [
+                "string"
+            ]
+        }, {
+            "name": "request21",
+            "id": "1",
+            "collectionid": "124",
+            "createdDate": 0,
+            "updatedDate": 0,
+            "inbound": true,
+            "httpdef": "string",
+            "curl": "string",
+            "url": "string",
+            "method": "GET",
+            "queryparams": [
+                {
+                    "key": "string",
+                    "value": "string",
+                    "enabled": true,
+                    "description": "string"
+                }
+            ],
+            "headers": [
+                {
+                    "key": "string",
+                    "value": "string",
+                    "enabled": true,
+                    "description": "string"
+                }
+            ],
+            "payload": {},
+            "tag": [
+                "string"
+            ]
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 <template>
   <nav class="grey lighten-4">
-    <v-toolbar flat dark>
+    <v-toolbar text dark>
       <v-app-bar-nav-icon
         class="grey--text"
         @click="drawer = !drawer"
@@ -10,32 +10,15 @@
         <span>http</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn flat>
+      <v-btn text>
         git-hub
         <!-- TODO Github icon -->
       </v-btn>
     </v-toolbar>
     <v-navigation-drawer v-model="drawer" temporary app class="white">
-      <!--
-            <v-list>
-             <v-list-tile>
-            <v-list-tile-action>
-                <v-icon class="black--text">mdi-history</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-            <v-list-tile-title class="black--text">  History</v-list-tile-title>
-            </v-list-tile-content>
-        </v-list-tile> 
-        </v-list>
-        -->
+      <v-toolbar dark> </v-toolbar>
 
-      <v-toolbar dark>
-        <!-- <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn> -->
-      </v-toolbar>
-
-      <v-list>
+      <!-- <v-list>
         <v-list-group
           v-for="item in items"
           :key="item.title"
@@ -58,79 +41,108 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
-      </v-list>
+      </v-list> -->
+      <template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item>
+
+          <v-list-group :value="true" prepend-icon="mdi-folder-multiple">
+            <template v-slot:activator>
+              <v-list-item-title>Folders</v-list-item-title>
+            </template>
+
+            <v-list-group
+              v-for="collection in collections"
+              :key="collection.id"
+              :value="collectionCheck"
+              v-on:click="getRequests(collection.id)"
+              sub-group
+            >
+              <!-- @click="collectionCheckMethod($event)" -->
+
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title>{{ collection.name }}</v-list-item-title>
+                </v-list-item-content>
+              </template>
+              <v-list-item v-for="request in requests" :key="request.id">
+                <v-list-item-content
+                  
+                  v-text="request.method"
+                  :click="getRequestData(request.id)"
+                ></v-list-item-content>
+                <v-list-item-content v-text="request.name"></v-list-item-content>
+                <!-- <v-list-item-icon>
+                  <v-icon v-text="icon"></v-icon>
+                </v-list-item-icon> -->
+              </v-list-item>
+            </v-list-group>
+          </v-list-group>
+        </v-list>
+      </template>
     </v-navigation-drawer>
   </nav>
 </template>
 
 <script>
-const statusCategories = [
-  {
-    name: "informational",
-    statusCodeRegex: new RegExp(/[1][0-9]+/),
-    className: "info--text",
-  },
-  {
-    name: "successful",
-    statusCodeRegex: new RegExp(/[2][0-9]+/),
-    className: "green--text",
-  },
-  {
-    name: "redirection",
-    statusCodeRegex: new RegExp(/[3][0-9]+/),
-    className: "orange--text",
-  },
-  {
-    name: "client error",
-    statusCodeRegex: new RegExp(/[4][0-9]+/),
-    className: "red--text",
-  },
-  {
-    name: "server error",
-    statusCodeRegex: new RegExp(/[5][0-9]+/),
-    className: "yellow--text",
-  },
-  {
-    name: "unknown",
-    statusCodeRegex: new RegExp(/.*/),
-    className: "missing-data-response",
-  },
-];
-export const findStatusGroup = (responseStatus) =>
-  statusCategories.find((status) => status.items.statusCodeRegex.test(responseStatus));
 export default {
   data() {
     return {
-      drawer: false,
-      items: [
-        {
-          action: "mdi-folder-multiple",
-          items: [{ title: "List Item" }],
-          title: "Folder",
-        },
-        {
-          action: "mdi-history",
-          active: true,
-          items: [
-            { title: "/get", status: "101" },
-            {
-              title: "/post",
-              status: "201",
-            },
-            { title: "303" },
-            { title: "403" },
-            { title: "502" },
-          ],
-          title: "History",
-        },
-      ],
+      drawer: true,
+      collectionCheck: false,
+      requestData: [],
+      // admins: [
+      //   ["Management", "mdi-account-multiple-outline"],
+      //   ["Settings", "mdi-cog-outline"],
+      // ],
+      collections: [],
+      requests: [],
     };
+  },
+  methods: {
+    collectionCheckMethod() {
+      this.collectionCheck != this.collectionCheck;
+    },
+    getRequests(collectionId) {
+      // TODO change url after connecting to backend
+      //  this.$http.get("requests/"+collectionId).then(res => {
+      this.$http.get("requests/?collectionid=" + collectionId).then((res) => {
+        if (res.status == 200) {
+          this.requests = res.data;
+          console.log("req", this.requests);
+        }
+      });
+    },
+    getRequestData(requestId) {
+      this.$http.get("requests/" + requestId).then((res) => {
+        if (res.status == 200) {
+          this.requestData = res.data;
+          console.log("req", this.requestData);
+        }
+      });
+    },
   },
   computed: {
     responseColor1() {
       console.log("Hello");
       return 1;
     },
+  },
+  mounted() {
+    this.$http
+      .get("collection")
+      .then((res) => {
+        if (res.status == 200) {
+          this.collections = res.data;
+        }
+      })
+      .catch((err) => console.log(err.message));
   },
 };
 </script>
