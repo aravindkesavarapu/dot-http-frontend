@@ -9,14 +9,13 @@
         <span class="font-weight-light">Dot</span>
         <span>http</span>
       </v-toolbar-title>
-        <v-btn :click="getRequestData(1)" primary>request1 edit</v-btn>
       <v-spacer></v-spacer>
       <v-btn text>
         git-hub
         <!-- TODO Github icon -->
       </v-btn>
     </v-toolbar>
-    <v-navigation-drawer v-model="drawer" temporary app class="white">
+    <v-navigation-drawer v-model="drawer" permanent app class="white">
       <v-toolbar dark> </v-toolbar>
       <template>
         <v-list>
@@ -36,19 +35,25 @@
             <v-list-group
               v-for="collection in collections"
               :key="collection.id"
-              :value="collectionCheck"
+              :value="collection"
+              @click="getRequests(collection.id)"
               sub-group
             >
               <!-- @click="collectionCheckMethod($event)" -->
 
               <template v-slot:activator>
-                <v-list-item-content v-on:click="getRequests(collection.id)">
+                <v-list-item-content>
                   <v-list-item-title>{{ collection.name }}</v-list-item-title>
                 </v-list-item-content>
               </template>
-              <v-list-item v-for="request in requests" :key="request.id" link>
-                <v-list-item-content :click="getRequestData(request.id)">
+              <v-list-item
+                v-for="request in requests"
+                :key="request.id"
+                link
+              >
+                <v-list-item-content>
                   <v-list-item-title
+                    @click="getRequestData(request.id)"
                     v-text="request.method"
                   ></v-list-item-title>
                   <v-list-item-subtitle
@@ -92,13 +97,14 @@ export default {
       });
     },
     getRequestData(requestId) {
-      console.log("in get requst dayta", requestId);
-      this.$http.get("requests/" + requestId).then((res) => {
-        if (res.status == 200) {
-          this.requestData = res.data;
-          console.log("req: ", requestId, this.requestData);
-        }
-      });
+        this.$router.push('/dothttp/'+requestId)
+      // console.log("in get requst dayta", requestId);
+      // this.$http.get("requests/" + requestId).then((res) => {
+      //   if (res.status == 200) {
+      //     this.requestData = res.data;
+      //     console.log("req: ", requestId, this.requestData);
+      //   }
+      // });
     },
   },
   computed: {

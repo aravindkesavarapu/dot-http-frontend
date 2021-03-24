@@ -1,9 +1,21 @@
 <template>
   <v-container fluid>
+    <div v-if="requestIdView">
+      <h1>WElocme to edit page</h1>
+      <p>welocme to request edit{{ requestIdView }}</p>
+      <v-btn @click="retrieveRequest(requestIdView)"> edit request</v-btn>
+    </div>
     <section>
       <v-row>
         <v-col cols="12" sm="8" md="8">
-          <v-text-field label="Request Title" solo clearable></v-text-field>
+          <v-text-field
+            label="Request Title"
+            v-model="request.name"
+            solo
+          ></v-text-field>
+        </v-col>
+        <v-col class="d-flex" cols="12" md="1" sm="8">
+          <HttpDefPopup :httpdef="request.httpdef" />
         </v-col>
       </v-row>
       <v-row align="center">
@@ -11,7 +23,7 @@
           <v-select
             :items="items"
             label="METHOD"
-            v-model="method"
+            v-model="request.method"
             solo
           ></v-select>
         </v-col>
@@ -21,7 +33,7 @@
             placeholder="https://www.dothttp.dev/"
             solo
             clearable
-            v-model="url"
+            v-model="request.url"
           ></v-text-field>
         </v-col>
         <v-col class="d-flex mt-n8 pt-n1" cols="12" md="2" sm="2">
@@ -45,15 +57,15 @@
       <v-row label="Parameter List" v-if="row === 'params'">
         <v-col cols="12" sm="12" md="12">
           <div
-            v-for="(textField, i) in textFields"
-            :key="i"
+            v-for="params in request.queryparams"
+            :key="params"
             class="text-fields-row"
           >
             <v-row>
               <v-col cols="12" sm="6" md="5">
                 <v-text-field
                   :label="'key ' + (i + 1)"
-                  v-model="textField.value1"
+                  v-model="params.key"
                   solo
                   clearable
                 ></v-text-field>
@@ -61,6 +73,7 @@
               <v-col cols="12" sm="6" md="5">
                 <v-text-field
                   :label="'value ' + (i + 1)"
+                  v-model="params.value"
                   solo
                   clearable
                 ></v-text-field>
@@ -115,15 +128,15 @@
       <v-row label="Header" v-if="row === 'header'">
         <v-col cols="12" sm="12" md="12">
           <div
-            v-for="(textField, i) in textFields"
-            :key="i"
+            v-for="header in request.headers"
+            :key="header"
             class="text-fields-row"
           >
             <v-row>
               <v-col cols="12" sm="6" md="5">
                 <v-text-field
-                  :label="'Header ' + (i + 1)"
-                  v-model="textField.value1"
+                  :label="'key ' + (i + 1)"
+                  v-model="header.key"
                   solo
                   clearable
                 ></v-text-field>
@@ -131,10 +144,12 @@
               <v-col cols="12" sm="6" md="5">
                 <v-text-field
                   :label="'value ' + (i + 1)"
+                  v-model="header.value"
                   solo
                   clearable
                 ></v-text-field>
               </v-col>
+
               <v-col cols="12" sm="2" md="2">
                 <v-btn @click="remove">
                   <v-icon class="d-flex">mdi-delete</v-icon>
@@ -188,6 +203,7 @@
 <script>
 import section from "../components/section";
 import hljs from "highlight.js";
+import HttpDefPopup from "./HttpDefPopup";
 
 const statusCategories = [
   {
@@ -227,10 +243,48 @@ export const findStatusGroup = (responseStatus) =>
   );
 
 export default {
+  components: { HttpDefPopup },
   name: "DotHttp",
 
   data() {
     return {
+      // view data delete after
+      requestIdView: this.$route.params.id,
+      request: [
+        {
+          collectionid: "",
+          name: "",
+          id: "",
+          createdDate: "",
+          updatedDate: "",
+          inbound: "",
+          httpdef: "",
+          curl: "",
+          method: "",
+          // row: "",
+          url: "",
+          queryparams: [
+            {
+              key: "",
+              value: "",
+              enabled: true,
+              description: "",
+            },
+          ],
+          headers: [
+            {
+              key: "",
+              value: "",
+              enabled: true,
+              description: "",
+            },
+          ],
+          payload: {},
+          tag: [""],
+        },
+      ],
+      backendResponse: [],
+      //view data delete after
       statusColour: "info",
       response: {
         status: "400",
@@ -258,75 +312,93 @@ export default {
       return findStatusGroup(this.response.status);
     },
   },
-    watch: {
-      contentType(val) {
-        this.rawInput = !this.knownContentTypes.includes(val);
-      },
-      rawInput(status) {
-        if (status && this.rawParams === "") this.rawParams = "{}";
-        else this.setRouteQueryState();
-      },
-      "response.body": function () {
-        var responseText =
-          document.querySelector("div#response-details-wrapper pre code") !=
-          null
-            ? document.querySelector("div#response-details-wrapper pre code")
-            : null;
-        if (responseText) {
-          if (
-            document.querySelector(".hljs") !== null &&
-            responseText.innerHTML.indexOf('<span class="hljs') !== -1
-          ) {
-            responseText.removeAttribute("class");
-            responseText.innerHTML = null;
-            responseText.innerText = this.response.body;
-          } else if (
-            responseText &&
-            this.response.body != "(waiting to send request)" &&
-            this.response.body != "Loading..." &&
-            this.response.body != "See JavaScript console (F12) for details."
-          ) {
-            // responseText.innerText = this.responseType == 'application/json' || 'application/hal+json' ? JSON.stringify(this.response.body,
-            //   null, 2) : this.response.body;
-            hljs.highlightBlock(
-              document.querySelector("div#response-details-wrapper pre code")
-            );
-          } else {
-            responseText.innerText = this.response.body;
-          }
-        }
-      },
-      params: {
-        handler: function (newValue) {
-          if (!this.paramsWatchEnabled) {
-            this.paramsWatchEnabled = true;
-            return;
-          }
-          let path = this.path;
-          let queryString = newValue
-            .filter(({ key }) => !!key)
-            .map(({ key, value }) => `${key}=${value}`)
-            .join("&");
-          queryString = queryString === "" ? "" : `?${queryString}`;
-          if (path.includes("?")) {
-            path = path.slice(0, path.indexOf("?")) + queryString;
-          } else {
-            path = path + queryString;
-          }
-
-          this.path = path;
-        },
-        deep: true,
-      },
+  watch: {
+    contentType(val) {
+      this.rawInput = !this.knownContentTypes.includes(val);
     },
+    rawInput(status) {
+      if (status && this.rawParams === "") this.rawParams = "{}";
+      else this.setRouteQueryState();
+    },
+    "response.body": function () {
+      var responseText =
+        document.querySelector("div#response-details-wrapper pre code") != null
+          ? document.querySelector("div#response-details-wrapper pre code")
+          : null;
+      if (responseText) {
+        if (
+          document.querySelector(".hljs") !== null &&
+          responseText.innerHTML.indexOf('<span class="hljs') !== -1
+        ) {
+          responseText.removeAttribute("class");
+          responseText.innerHTML = null;
+          responseText.innerText = this.response.body;
+        } else if (
+          responseText &&
+          this.response.body != "(waiting to send request)" &&
+          this.response.body != "Loading..." &&
+          this.response.body != "See JavaScript console (F12) for details."
+        ) {
+          // responseText.innerText = this.responseType == 'application/json' || 'application/hal+json' ? JSON.stringify(this.response.body,
+          //   null, 2) : this.response.body;
+          hljs.highlightBlock(
+            document.querySelector("div#response-details-wrapper pre code")
+          );
+        } else {
+          responseText.innerText = this.response.body;
+        }
+      }
+    },
+    params: {
+      handler: function (newValue) {
+        if (!this.paramsWatchEnabled) {
+          this.paramsWatchEnabled = true;
+          return;
+        }
+        let path = this.path;
+        let queryString = newValue
+          .filter(({ key }) => !!key)
+          .map(({ key, value }) => `${key}=${value}`)
+          .join("&");
+        queryString = queryString === "" ? "" : `?${queryString}`;
+        if (path.includes("?")) {
+          path = path.slice(0, path.indexOf("?")) + queryString;
+        } else {
+          path = path + queryString;
+        }
+
+        this.path = path;
+      },
+      deep: true,
+    },
+  },
 
   methods: {
-  
+    // delete all these after
+    //  view request data
+    retrieveRequest(requestId) {
+      this.$http.get("requests/" + requestId).then((res) => {
+        if (res.status == 200) {
+          // this.requestData = res.data;
+          this.request = res.data;
+          console.log(
+            "I'm in dothttp view requestid: ",
+            requestId,
+            this.request
+          );
+        }
+      });
+    },
+
+    // delete after ^
     add() {
+      console.log("clcked");
+
       // console.log(row);
-      this.textFields.push({
-        value1: "",
-        value2: "",
+      this.request.queryparams.push({
+
+        key: "",
+        value: "",
       });
     },
     remove(index) {

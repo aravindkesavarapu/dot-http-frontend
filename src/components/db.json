@@ -74,23 +74,36 @@
             "method": "POST",
             "queryparams": [
                 {
-                    "key": "string",
-                    "value": "string",
+                    "key": "userName",
+                    "value": "aravind",
                     "enabled": true,
-                    "description": "string"
+                    "description": "this is username feild"
+                },
+                {
+                    "key": "password",
+                    "value": "passwordfeildvalue",
+                    "enabled": true,
+                    "description": "this is password feild desc"
                 }
             ],
             "headers": [
                 {
-                    "key": "string",
-                    "value": "string",
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "enabled": true,
+                    "description": "string"
+                },
+                {
+                    "key": "Accept-Encoding",
+                    "value": "gzip, deflate, br",
                     "enabled": true,
                     "description": "string"
                 }
             ],
             "payload": {
-                "userName":"aravind",
-                "mail":"aravind@gmail.com"},
+                "userName": "aravind",
+                "mail": "aravind@gmail.com"
+            },
             "tag": [
                 "string"
             ]
