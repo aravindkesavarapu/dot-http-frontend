@@ -9,6 +9,7 @@
         <span class="font-weight-light">Dot</span>
         <span>http</span>
       </v-toolbar-title>
+        <v-btn :click="getRequestData(1)" primary>request1 edit</v-btn>
       <v-spacer></v-spacer>
       <v-btn text>
         git-hub
@@ -17,30 +18,6 @@
     </v-toolbar>
     <v-navigation-drawer v-model="drawer" temporary app class="white">
       <v-toolbar dark> </v-toolbar>
-
-      <!-- <v-list>
-        <v-list-group
-          v-for="item in items"
-          :key="item.title"
-          v-model="item.active"
-          :prepend-icon="item.action"
-          no-action
-        >
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title"></v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item v-for="child in item.items" :key="child.title">
-            <v-list-item-content>
-              <v-list-item-title
-                v-text="child.title"
-                :class="child.title ? 'red--text' : child.tilte == 102"
-              ></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-      </v-list> -->
       <template>
         <v-list>
           <v-list-item>
@@ -60,21 +37,19 @@
               v-for="collection in collections"
               :key="collection.id"
               :value="collectionCheck"
-              v-on:click="getRequests(collection.id)"
               sub-group
             >
               <!-- @click="collectionCheckMethod($event)" -->
 
               <template v-slot:activator>
-                <v-list-item-content>
+                <v-list-item-content v-on:click="getRequests(collection.id)">
                   <v-list-item-title>{{ collection.name }}</v-list-item-title>
                 </v-list-item-content>
               </template>
               <v-list-item v-for="request in requests" :key="request.id" link>
-                <v-list-item-content>
+                <v-list-item-content :click="getRequestData(request.id)">
                   <v-list-item-title
                     v-text="request.method"
-                    :click="getRequestData(request.id)"
                   ></v-list-item-title>
                   <v-list-item-subtitle
                     v-text="request.name"
