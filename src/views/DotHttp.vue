@@ -388,6 +388,19 @@ export default {
     //   });
     // },
 
+    async run(data) {
+      const pycode = 'main("""' + data + '""")';
+      const out = await window.pyodide.runPython(pycode);
+
+      console.log("method is ", out.method);
+      console.log("url is ", out.url);
+      console.log("headers are ", out.headers);
+      console.log("urlparams are ", out.query);
+      console.log("data is ", out.payload);
+      console.log(out);
+      return out;
+    },
+
     // delete after ^
     add() {
       console.log("clcked");
@@ -400,12 +413,14 @@ export default {
       this.textFields.splice(index, 1);
     },
     sendRequest() {
-      console.log("sending request");
-      console.log("inside send request method" + " " + this.request);
-    
-    this.$http.post('/requests',this.form).then((res)=>{
-        console.log(res);
-      })
+      const newLocal="@name('helel') GET http://google.com";
+      // console.log("sending request");
+      // console.log("inside send request method" + " " + this.request);
+    this.run(newLocal)
+    this.run(newLocal)
+    // this.$http.post('/requests',this.form).then((res)=>{
+    //     console.log(res);
+    //   })
     },
     // sendRequestBackend(){
     //   this.$http.post('/requests',this.form).then((res)=>{
