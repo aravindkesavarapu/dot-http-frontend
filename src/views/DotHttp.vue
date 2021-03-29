@@ -12,7 +12,39 @@
           ></v-text-field>
         </v-col>
         <v-col class="d-flex" cols="12" md="1" sm="8">
-          <HttpDefPopup :httpdef="request.httpdef" />
+       
+
+<v-row justify="center">
+    <v-dialog v-model="dialog" persistent max-width="600" @keydown.esc="dialog = false">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn color="primary" dark v-bind="attrs" v-on="on">
+          Http Def's
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title class="headline"> HTTP File </v-card-title>
+        <v-card-text>
+          <v-form class="px-3">
+            <v-textarea v-model="httpdef" label="Http file"></v-textarea>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <!-- <v-btn color="green darken-1" text @click="dialog = false">
+            Disagree
+          </v-btn> -->
+          <v-btn color="green darken-1" text   @click="dialog = false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+
+
+
+       
+       
         </v-col>
       </v-row>
       <v-row align="center">
@@ -201,7 +233,6 @@
 <script>
 import section from "../components/section";
 import hljs from "highlight.js";
-import HttpDefPopup from "./HttpDefPopup";
 
 const statusCategories = [
   {
@@ -241,13 +272,15 @@ export const findStatusGroup = (responseStatus) =>
   );
 
 export default {
-  components: { HttpDefPopup },
   name: "DotHttp",
 
   data() {
     return {
+      httpdef:'',
+      dialog:false,
       // view data delete after
       requestIdView: this.$route.params.id,
+      // this.request.httpdef:this.httpdef,
       request: [
         {
           collectionid: "",
@@ -413,14 +446,8 @@ export default {
       this.textFields.splice(index, 1);
     },
     sendRequest() {
-      const newLocal="@name('helel') GET http://google.com";
-      // console.log("sending request");
-      // console.log("inside send request method" + " " + this.request);
-    this.run(newLocal)
-    this.run(newLocal)
-    // this.$http.post('/requests',this.form).then((res)=>{
-    //     console.log(res);
-    //   })
+      console.log(this.httpdef);
+      this.run(this.httpdef);
     },
     // sendRequestBackend(){
     //   this.$http.post('/requests',this.form).then((res)=>{
