@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600">
+    <v-dialog v-model="dialog" persistent max-width="600" @keydown.esc="dialog = false">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" dark v-bind="attrs" v-on="on">
           Http Def's
@@ -10,7 +10,7 @@
         <v-card-title class="headline"> HTTP File </v-card-title>
         <v-card-text>
           <v-form class="px-3">
-            <v-textarea v-model="httpdef" disabled label="Http file"></v-textarea>
+            <v-textarea v-model="httpdef" label="Http file"></v-textarea>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -18,7 +18,7 @@
           <!-- <v-btn color="green darken-1" text @click="dialog = false">
             Disagree
           </v-btn> -->
-          <v-btn color="green darken-1" text @click="dialog = false">
+          <v-btn color="green darken-1" text   @click="dialog = false">
             Close
           </v-btn>
         </v-card-actions>

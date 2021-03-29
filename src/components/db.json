@@ -1,144 +1,223 @@
 {
-    "collection": [
+  "collection": [
+    {
+      "id": "123",
+      "user": "user1",
+      "url": "https://dothttp.dev/collection1",
+      "description": "this is collection1 desc",
+      "name": "collection1",
+      "createdDate": "22-03-2021",
+      "updatedDate": "22-01-2012"
+    },
+    {
+      "id": "124",
+      "user": "user2",
+      "url": "https://dothttp.dev/collection2",
+      "description": "this is collection2 desc",
+      "name": "collection2",
+      "createdDate": "23-03-2021",
+      "updatedDate": "23-01-2012"
+    },
+    {
+      "id": "125",
+      "user": "user3",
+      "url": "https://dothttp.dev/collection3",
+      "description": "this is collection3 desc",
+      "name": "collection3",
+      "createdDate": "24-03-2021",
+      "updatedDate": "24-01-2012"
+    }
+  ],
+  "requests": [
+    {
+      "id": "1",
+      "collectionid": "123",
+      "name": "httpbin get curl request",
+      "createdDate": "23-03-2021",
+      "updatedDate": "24-03-2021",
+      "inbound": true,
+      "httpdef": "@name(\"httpbin get curl request\")GET \"https://httpbin.org/get\"",
+      "curl": "curl -X GET \\ https://httpbin.org/get",
+      "url": "https://httpbin.org/get",
+      "method": "GET",
+      "queryparams": [
         {
-            "id": "123",
-            "user": "user1",
-            "url": "https://dothttp.dev/collection1",
-            "description": "this is collection1 desc",
-            "name": "collection1",
-            "createdDate": "22-03-2021",
-            "updatedDate": "22-01-2012"
-        },
-        {
-            "id": "124",
-            "user": "user2",
-            "url": "https://dothttp.dev/collection2",
-            "description": "this is collection2 desc",
-            "name": "collection2",
-            "createdDate": "23-03-2021",
-            "updatedDate": "23-01-2012"
-        },
-        {
-            "id": "125",
-            "user": "user3",
-            "url": "https://dothttp.dev/collection3",
-            "description": "this is collection3 desc",
-            "name": "collection3",
-            "createdDate": "24-03-2021",
-            "updatedDate": "24-01-2012"
+          "key": "null",
+          "value": "null",
+          "enabled": true,
+          "description": "null"
         }
+      ],
+      "headers": [
+        {
+          "key": "null",
+          "value": "null",
+          "enabled": true,
+          "description": "string"
+        }
+      ],
+      "payload": {
+        "id": "1",
+        "userName": "aravind",
+        "mail": "aravind@gmail.com",
+        "description": "post data body"
+      
+
+
+      },
+      "tag": [
+        "string"
+      ]
+    },
+    {
+      "id": "2",
+      "collectionid": "123",
+      "name": "http bin post request",
+      "createdDate": "22-03-2021",
+      "updatedDate": "22-03-2021",
+      "inbound": true,
+      "httpdef": "@name(\"httpbin Post curl request\") POST \"https://httpbin.org/post\"",
+      "curl": "curl -X POST \\ -H 'Content-Length: 52' \\-H 'Content-Type: application/json' \\-d '{\"userName\": \"aravind\", \"mail\": \"aravind@gmail.com\"}' \\ https://httpbin.org/post",
+      "url": "https://httpbin.org/post",
+      "method": "POST",
+      "queryparams": [
+        {
+          "key": "userName",
+          "value": "aravind",
+          "enabled": true,
+          "description": "this is username feild"
+        },
+        {
+          "key": "password",
+          "value": "passwordfeildvalue",
+          "enabled": true,
+          "description": "this is password feild desc"
+        }
+      ],
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json",
+          "enabled": true,
+          "description": "string"
+        },
+        {
+          "key": "Accept-Encoding",
+          "value": "gzip, deflate, br",
+          "enabled": true,
+          "description": "string"
+        }
+      ],
+      "payload": {
+        "userName": "aravind",
+        "mail": "aravind@gmail.com"
+      },
+      "tag": [
+        "string"
+      ]
+    },
+    {
+      "collectionid": "124",
+      "name": "request21",
+      "id": "3",
+      "createdDate": 0,
+      "updatedDate": 0,
+      "inbound": true,
+      "httpdef": "string",
+      "curl": "string",
+      "url": "string",
+      "method": "GET",
+      "queryparams": [
+        {
+          "key": "string",
+          "value": "string",
+          "enabled": true,
+          "description": "string"
+        }
+      ],
+      "headers": [
+        {
+          "key": "string",
+          "value": "string",
+          "enabled": true,
+          "description": "string"
+        }
+      ],
+      "payload": {},
+      "tag": [
+        "string"
+      ]
+    },
+    [
+      {
+        "collectionid": "",
+        "name": "",
+        "id": "",
+        "createdDate": "",
+        "updatedDate": "",
+        "inbound": "",
+        "httpdef": "",
+        "curl": "",
+        "method": "",
+        "url": "",
+        "queryparams": [
+          {
+            "key": "",
+            "value": "",
+            "enabled": true,
+            "description": ""
+          }
+        ],
+        "headers": [
+          {
+            "key": "",
+            "value": "",
+            "enabled": true,
+            "description": ""
+          }
+        ],
+        "payload": {},
+        "tag": [
+          ""
+        ]
+      }
     ],
-    "requests": [
-        {
-            "id": "1",
-            "collectionid": "123",
-            "name": "httpbin get curl request",
-            "createdDate": "23-03-2021",
-            "updatedDate": "24-03-2021",
-            "inbound": true,
-            "httpdef": "@name(\"httpbin get curl request\")GET \"https://httpbin.org/get\"",
-            "curl": "curl -X GET \\ https://httpbin.org/get",
-            "url": "https://httpbin.org/get",
-            "method": "GET",
-            "queryparams": [
-                {
-                    "key": "null",
-                    "value": "null",
-                    "enabled": true,
-                    "description": "null"
-                }
-            ],
-            "headers": [
-                {
-                    "key": "null",
-                    "value": "null",
-                    "enabled": true,
-                    "description": "string"
-                }
-            ],
-            "payload": {},
-            "tag": [
-                "string"
-            ]
-        },
-        {
-            "id": "2",
-            "collectionid": "123",
-            "name": "http bin post request",
-            "createdDate": "22-03-2021",
-            "updatedDate": "22-03-2021",
-            "inbound": true,
-            "httpdef": "@name(\"httpbin Post curl request\") POST \"https://httpbin.org/post\"",
-            "curl": "curl -X POST \\ -H 'Content-Length: 52' \\-H 'Content-Type: application/json' \\-d '{\"userName\": \"aravind\", \"mail\": \"aravind@gmail.com\"}' \\ https://httpbin.org/post",
-            "url": "https://httpbin.org/post",
-            "method": "POST",
-            "queryparams": [
-                {
-                    "key": "userName",
-                    "value": "aravind",
-                    "enabled": true,
-                    "description": "this is username feild"
-                },
-                {
-                    "key": "password",
-                    "value": "passwordfeildvalue",
-                    "enabled": true,
-                    "description": "this is password feild desc"
-                }
-            ],
-            "headers": [
-                {
-                    "key": "Content-Type",
-                    "value": "application/json",
-                    "enabled": true,
-                    "description": "string"
-                },
-                {
-                    "key": "Accept-Encoding",
-                    "value": "gzip, deflate, br",
-                    "enabled": true,
-                    "description": "string"
-                }
-            ],
-            "payload": {
-                "userName": "aravind",
-                "mail": "aravind@gmail.com"
-            },
-            "tag": [
-                "string"
-            ]
-        },
-        {
-            "collectionid": "124",
-            "name": "request21",
-            "id": "3",
-            "createdDate": 0,
-            "updatedDate": 0,
-            "inbound": true,
-            "httpdef": "string",
-            "curl": "string",
-            "url": "string",
-            "method": "GET",
-            "queryparams": [
-                {
-                    "key": "string",
-                    "value": "string",
-                    "enabled": true,
-                    "description": "string"
-                }
-            ],
-            "headers": [
-                {
-                    "key": "string",
-                    "value": "string",
-                    "enabled": true,
-                    "description": "string"
-                }
-            ],
-            "payload": {},
-            "tag": [
-                "string"
-            ]
-        }
-    ]
+    [
+      {
+        "collectionid": "",
+        "name": "",
+        "id": "",
+        "createdDate": "",
+        "updatedDate": "",
+        "inbound": "",
+        "httpdef": "",
+        "curl": "",
+        "method": "",
+        "url": "",
+        "queryparams": [
+          {
+            "key": "",
+            "value": "",
+            "enabled": true,
+            "description": ""
+          }
+        ],
+        "headers": [
+          {
+            "key": "",
+            "value": "",
+            "enabled": true,
+            "description": ""
+          }
+        ],
+        "payload": {},
+        "tag": [
+          ""
+        ]
+      }
+    ],
+    {
+      "id": "ME5l9xU"
+    }
+  ]
 }

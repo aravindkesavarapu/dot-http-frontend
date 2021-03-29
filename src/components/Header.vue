@@ -27,17 +27,19 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
 
-          <v-list-group :value="true" prepend-icon="mdi-folder-multiple">
+          <v-list-group :value="false" prepend-icon="mdi-folder-multiple">
             <template v-slot:activator>
               <v-list-item-title>Folders</v-list-item-title>
             </template>
-
+            <div v-for="collection in collections"
+              :key="collection.id">
             <v-list-group
-              v-for="collection in collections"
-              :key="collection.id"
+              
               :value="collection"
               @click="getRequests(collection.id)"
               sub-group
+              no-action
+              link
             >
               <!-- @click="collectionCheckMethod($event)" -->
 
@@ -51,9 +53,8 @@
                 :key="request.id"
                 link
               >
-                <v-list-item-content>
+                <v-list-item-content  @click="getRequestData(request.id)">
                   <v-list-item-title
-                    @click="getRequestData(request.id)"
                     v-text="request.method"
                   ></v-list-item-title>
                   <v-list-item-subtitle
@@ -62,6 +63,7 @@
                 </v-list-item-content>
               </v-list-item>
             </v-list-group>
+            </div>
           </v-list-group>
         </v-list>
       </template>
@@ -97,7 +99,9 @@ export default {
       });
     },
     getRequestData(requestId) {
-        this.$router.push('/dothttp/'+requestId)
+      // console.log('/dothttp/'+requestId)
+      this.$router.push('/dothttp/'+requestId)
+        // this.$router.push('/dothttp/'+requestId)
       // console.log("in get requst dayta", requestId);
       // this.$http.get("requests/" + requestId).then((res) => {
       //   if (res.status == 200) {

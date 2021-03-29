@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    
+   
     <form ref="form">
     <section>
       <v-row>
@@ -76,7 +76,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="2" md="2">
-                <v-btn @click="remove">
+                <v-btn @click="remove(params)">
                   <v-icon class="d-flex">mdi-delete</v-icon>
                 </v-btn>
               </v-col>
@@ -166,7 +166,7 @@
       <!-- Body -->
       <v-row label="Body" v-if="row === 'body'">
         <v-col cols="12" md="12" sm="12">
-          <v-textarea solo name="input-7-4" label="Body"></v-textarea>
+          <v-textarea solo name="input-7-4" label="Body" v-model="request.payload"></v-textarea>
         </v-col>
       </v-row>
       <!-- /Body -->
@@ -202,6 +202,7 @@
 import section from "../components/section";
 import hljs from "highlight.js";
 import HttpDefPopup from "./HttpDefPopup";
+// import NavigationDuplicated from""
 
 const statusCategories = [
   {
@@ -247,7 +248,7 @@ export default {
   data() {
     return {
       // view data delete after
-      requestIdView: this.$route.params.id,
+      requestId:'',
       request: [
         {
           collectionid: "",
@@ -311,6 +312,10 @@ export default {
     },
   },
   watch: {
+    '$route' () {
+      this.$router.go();
+    },
+
     contentType(val) {
       this.rawInput = !this.knownContentTypes.includes(val);
     },
@@ -371,50 +376,41 @@ export default {
     },
   },
 
+  mounted(){
+    // this.watchingParams();
+    this.requestId = this.$route.params.id
+    console.log(this.requestId,"this request ud")
+        this.$http.get("requests/" + this.requestId).then((res) => {
+        if (res.status == 200) {
+          this.request = res.data;
+          this.request.payload = JSON.stringify(this.request.payload);
+    }
+   })  
+},
+
   methods: {
     // delete all these after
     //  view request data
-    // retrieveRequest(requestId) {
-    //   this.$http.get("requests/" + requestId).then((res) => {
-    //     if (res.status == 200) {
-    //       // this.requestData = res.data;
-    //       this.request = res.data;
-    //       console.log(
-    //         "I'm in dothttp view requestid: ",
-    //         requestId,
-    //         this.request
-    //       );
-    //     }
-    //   });
-    // },
+     
 
     // delete after ^
     add() {
       console.log("clcked");
+
+      // console.log(row);
       this.request.queryparams.push({
+
         key: "",
         value: "",
       });
     },
     remove(index) {
-      this.textFields.splice(index, 1);
+      this.request.queryparams.splice(index, 1);
     },
     sendRequest() {
       console.log("sending request");
-      console.log("inside send request method" + " " + this.request);
-    
-    this.$http.post('/requests',this.form).then((res)=>{
-        console.log(res);
-      })
+      console.log(this.method + " " + this.url);
     },
-    // sendRequestBackend(){
-    //   this.$http.post('/requests',this.form).then((res)=>{
-    //     console.log(res);
-    //   })
-    // }
-
-
-
   },
 };
 </script>

@@ -20,13 +20,22 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/dothttp/:id',
+    path: '/dothttp',
     name: 'DotHttp',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/DotHttp.vue')
   },{
+    path: '/dothttp/:id',
+    name: 'EditForm',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/EditForm.vue')
+  }
+  
+  ,{
     path: '/temp',
     name: 'Temp',
     // route level code-splitting
