@@ -17,7 +17,8 @@
 <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600" @keydown.esc="dialog = false">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">
+        <v-btn color="primary"
+         dark v-bind="attrs" v-on="on">
           Http Def's
         </v-btn>
       </template>
@@ -25,15 +26,15 @@
         <v-card-title class="headline"> HTTP File </v-card-title>
         <v-card-text>
           <v-form class="px-3">
-            <v-textarea v-model="httpdef" label="Http file"></v-textarea>
+            <v-textarea label="Http file"
+             v-shortkey.once="{get:['ctrl','alt','g'],post:['ctrl','alt','p'],delete:['ctrl','alt','e'],put:['ctrl','alt','u']}" @shortkey.native="postMethod($event)"
+            v-model="httpdef"
+            ></v-textarea>
           </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <!-- <v-btn color="green darken-1" text @click="dialog = false">
-            Disagree
-          </v-btn> -->
-          <v-btn color="green darken-1" text   @click="dialog = false">
+          <v-btn color="green darken-1" text @click="parse">
             Close
           </v-btn>
         </v-card-actions>
@@ -231,8 +232,11 @@
   </v-container>
 </template>
 <script>
+import Vue from "vue";
 import section from "../components/section";
 import hljs from "highlight.js";
+
+Vue.use(require('vue-shortkey'))
 
 const statusCategories = [
   {
@@ -274,9 +278,11 @@ export const findStatusGroup = (responseStatus) =>
 export default {
   name: "DotHttp",
 
+
   data() {
     return {
-      httpdef:'',
+  out:'',
+  httpdef:'',
       dialog:false,
       // view data delete after
       requestIdView: this.$route.params.id,
@@ -405,6 +411,52 @@ export default {
   },
 
   methods: {
+parse(){
+console.log(this.httpdef);
+  this.dialog = !this.dialog;
+   this.run(this.httpdef);
+  this.request.name = this.out.name;
+  this.request.url = this.out.url;
+},
+postMethod(event){
+  console.log(event.srcKey)
+  console.log(this.httpdef)
+  // if(event.srcKey === 'get'){
+  //   this.httpdef=`@name(Get Request)
+  //               GET "https://dothttp.dev/get"
+  //   `;  
+  //   }
+  switch(event.srcKey){
+    
+    case 'get':
+    this.httpdef=`@name("Get Request")
+    GET "https://dothttp.dev/get"`    
+    break;
+    case 'post':
+    this.httpdef=`@name("POST Request")
+    POST "https://dothttp.dev/post"
+    data({
+   "user": "adam",
+   "height" : 8.8
+   }) `
+   break; 
+    case 'delete':
+    this.httpdef=`@name("DELETE Request")
+    DELETE "https://dothttp.dev/delete/1"`
+    break;
+    case 'put':
+    this.httpdef=`@name("PUT Request")
+    PUT "https://dothttp.dev/put/1"`
+    break;
+      
+  }
+  
+  console.log(this.httpdef)
+  // switch(event){
+  //   case
+  // }
+},
+
     // delete all these after
     //  view request data
     // retrieveRequest(requestId) {
@@ -420,18 +472,30 @@ export default {
     //     }
     //   });
     // },
-
+theAction (event) {
+  console.log("IN Action")
+  console.log(event)
+    switch (event.srcKey) {
+      case 'up':
+        this.request.name = "CTRL Short Key"
+        console.log("UP")
+        this.httpdef = `@name("UP")`
+        break
+      case 'down':
+        console.log("Down")
+        this.httpdef = `@name("DOWN")`
+        break
+    }
+},
     async run(data) {
       const pycode = 'main("""' + data + '""")';
-      const out = await window.pyodide.runPython(pycode);
+      this.out = await window.pyodide.runPython(pycode);
 
-      console.log("method is ", out.method);
-      console.log("url is ", out.url);
-      console.log("headers are ", out.headers);
-      console.log("urlparams are ", out.query);
-      console.log("data is ", out.payload);
-      console.log(out);
-      return out;
+      console.log("method is ", this.out.method);
+      console.log("url is ", this.out.url);
+      console.log("headers are ", this.out.headers);
+      console.log("urlparams are ", this.out.query);
+      console.log("data is ", this.out.payload);
     },
 
     // delete after ^
@@ -454,9 +518,6 @@ export default {
     //     console.log(res);
     //   })
     // }
-
-
-
   },
 };
 </script>
