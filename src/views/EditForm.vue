@@ -202,6 +202,9 @@
 import section from "../components/section";
 import hljs from "highlight.js";
 import HttpDefPopup from "./HttpDefPopup";
+import Prism from 'prismjs'
+import 'prismjs/themes/prism.css'
+
 // import NavigationDuplicated from""
 
 const statusCategories = [
@@ -377,6 +380,7 @@ export default {
   },
 
   mounted(){
+    Prism.highlightAll()
     // this.watchingParams();
     this.requestId = this.$route.params.id
     console.log(this.requestId,"this request ud")

@@ -59,11 +59,7 @@
         </v-col>
         <v-col class="d-flex" cols="12" md="8" sm="8">
           <v-text-field
-            label="URL"
-            placeholder="https://www.dothttp.dev/"
-            solo
-            clearable
-            v-model="request.url"
+           v-model="request.name" 
           ></v-text-field>
         </v-col>
         <v-col class="d-flex mt-n8 pt-n1" cols="12" md="2" sm="2">
@@ -409,14 +405,16 @@ export default {
       deep: true,
     },
   },
-
+  
   methods: {
-parse(){
+async parse(){
 console.log(this.httpdef);
   this.dialog = !this.dialog;
-   this.run(this.httpdef);
-  this.request.name = this.out.name;
-  this.request.url = this.out.url;
+  const outa = await this.run(this.httpdef);
+  this.request.name = outa.name;
+  this.request.url = outa.url;
+  this.request.method = outa.method;
+  // console.log(this.request.name +" "+this.request.url)
 },
 postMethod(event){
   console.log(event.srcKey)
@@ -430,11 +428,11 @@ postMethod(event){
     
     case 'get':
     this.httpdef=`@name("Get Request")
-    GET "https://dothttp.dev/get"`    
+    GET https://dothttp.dev/get`    
     break;
     case 'post':
     this.httpdef=`@name("POST Request")
-    POST "https://dothttp.dev/post"
+    POST https://dothttp.dev/post
     data({
    "user": "adam",
    "height" : 8.8
@@ -442,16 +440,15 @@ postMethod(event){
    break; 
     case 'delete':
     this.httpdef=`@name("DELETE Request")
-    DELETE "https://dothttp.dev/delete/1"`
+    DELETE https://dothttp.dev/delete/1`
     break;
     case 'put':
     this.httpdef=`@name("PUT Request")
-    PUT "https://dothttp.dev/put/1"`
+    PUT https://dothttp.dev/put/1`
     break;
       
   }
-  
-  console.log(this.httpdef)
+  // console.log(this.httpdef)
   // switch(event){
   //   case
   // }
@@ -489,13 +486,17 @@ theAction (event) {
 },
     async run(data) {
       const pycode = 'main("""' + data + '""")';
-      this.out = await window.pyodide.runPython(pycode);
+      const out = await window.pyodide.runPython(pycode);
+      console.log("working fine");
 
-      console.log("method is ", this.out.method);
-      console.log("url is ", this.out.url);
-      console.log("headers are ", this.out.headers);
-      console.log("urlparams are ", this.out.query);
-      console.log("data is ", this.out.payload);
+  this.request.url = out.url;
+  this.request.method = out.method;
+      // console.log("method is ", this.out.method);
+      // console.log("url is ", this.out.url);
+      // console.log("headers are ", this.out.headers);
+      // console.log("urlparams are ", this.out.query);
+      // console.log("data is ", this.out.payload);
+      return this.out;
     },
 
     // delete after ^
@@ -519,6 +520,7 @@ theAction (event) {
     //   })
     // }
   },
+ 
 };
 </script>
 
